@@ -1,4 +1,5 @@
 import React, { Children } from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 const AuthenticationPageStyle = styled.div`
@@ -37,7 +38,13 @@ const AuthenticationPage = ({ children }) => {
   return (
     <AuthenticationPageStyle>
       <div className="container">
-        <img srcSet="/asset/images/husky1.png 2x" alt="logo" className="logo" />
+        <Link to="/">
+          <img
+            srcSet="/asset/images/husky1.png 2x"
+            alt="logo"
+            className="logo"
+          />
+        </Link>
         <h1 className="heading">Husky Blogging</h1>
         {children}
       </div>
