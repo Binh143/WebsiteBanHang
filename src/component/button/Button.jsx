@@ -1,27 +1,37 @@
 import LoadingSpinner from "component/loading";
 import React from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
 
 const StyleButton = styled.button`
   cursor: ${(props) => (props.isLoading ? "wait" : "pointer")};
   padding: 0 20px;
-  width: 100%;
   height: ${(props) => props.height || "66px"};
   line-height: 1;
-  color: white;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-image: linear-gradient(
-    to right bottom,
-    ${(props) => props.theme.primary},
-    ${(props) => props.theme.secondary}
-  );
+  ${(props) =>
+    props.kind === "secondary" &&
+    css`
+      background-color: white;
+      color: ${(props) => props.theme.primary};
+    `};
+  ${(props) =>
+    props.kind === "primary" &&
+    css`
+      color: white;
+      background-image: linear-gradient(
+        to right bottom,
+        ${(props) => props.theme.primary},
+        ${(props) => props.theme.secondary}
+      );
+    `};
   border-radius: 8px;
   font-size: 18px;
   font-weight: 600;
-  margin: 0 auto;
+
   &:disabled {
     opacity: 0.5;
     cursor: not-allowed;
@@ -35,21 +45,37 @@ const StyleButton = styled.button`
 const Button = ({
   children,
   type = "button",
+  kind = "primary",
   onClick = () => {},
   ...props
 }) => {
-  const { isLoading } = props;
+  const { isLoading, href } = props;
   const child = isLoading ? <LoadingSpinner></LoadingSpinner> : children;
+  if (href !== "" && typeof href === "string") {
+    return (
+      <Link to={href}>
+        <StyleButton
+          type={type}
+          kind={kind}
+          {...props}
+          style={{ display: "inline-block" }}
+        >
+          {child}
+        </StyleButton>
+      </Link>
+    );
+  }
   return (
-    <StyleButton type={type} onClick={onclick} {...props}>
+    <StyleButton type={type} kind={kind} onClick={onclick} {...props}>
       {child}
     </StyleButton>
   );
 };
 Button.prototype = {
-  type: PropTypes.oneOf(["button", "submit"]).isRequired,
+  type: PropTypes.oneOf(["button", "submit"]),
   isLoading: PropTypes.bool,
   onClick: PropTypes.func,
   children: PropTypes.node,
+  kind: PropTypes.oneOf(["primary", "secondary"]),
 };
 export default Button;

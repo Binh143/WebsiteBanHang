@@ -1,8 +1,8 @@
 import React from "react";
 
-const SearchIcon = ({ className, onclick = () => {} }) => {
+const SearchIcon = ({ className, onClick = () => {} }) => {
   return (
-    <span className={className} onclick={onclick}>
+    <span className={className} onClick={onClick}>
       <svg
         width="18"
         height="17"

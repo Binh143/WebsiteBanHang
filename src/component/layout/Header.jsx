@@ -5,6 +5,7 @@ import { SearchIcon } from "component/icon";
 import { useForm } from "react-hook-form";
 import { Button } from "component/button";
 import { Link, NavLink } from "react-router-dom";
+import { useAuth } from "contexts/auth-context";
 
 const StyleHeader = styled.header`
   padding: 20px 0;
@@ -42,7 +43,8 @@ const StyleHeader = styled.header`
           width: 100%;
         }
       }
-      & > button {
+      & > a,
+      & > a > button {
         max-width: 200px;
         height: 46px;
         font-size: inherit;
@@ -65,7 +67,14 @@ const menuLinks = [
     title: "Contact",
   },
 ];
+function getLastName(name) {
+  if (!name) return "User";
+  const length = name.split(" ").length;
+  return name.split(" ")[length - 1];
+}
 const Header = () => {
+  const { userInfo } = useAuth();
+  console.log("🚀 ~ file: Header.jsx:72 ~ Header ~ userInfo:", userInfo);
   const {
     handleSubmit,
     control,
@@ -105,7 +114,18 @@ const Header = () => {
                 <SearchIcon className="input-icon"></SearchIcon>
               </Input>
             </div>
-            <Button>Sign Up</Button>
+            {!userInfo ? (
+              <Button type="button" href="/sign-in">
+                Login
+              </Button>
+            ) : (
+              <div className="header-auth">
+                Welcome back,{" "}
+                <strong className="text-primary">
+                  {getLastName(userInfo?.displayName)}
+                </strong>
+              </div>
+            )}
           </div>
         </div>
       </div>
