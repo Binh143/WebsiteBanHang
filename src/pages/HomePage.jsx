@@ -2,7 +2,13 @@ import { auth } from "firebase-app/firebase-config";
 import { signOut } from "firebase/auth";
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
+import HomeBanner from "module/home/HomeBanner";
+import { Layout } from "component/layout";
+import HomeFeature from "module/home/HomeFeature";
+import HomeNewest from "module/home/HomeNewest";
 
+const StyleHome = styled.div``;
 const HomePage = () => {
   const navigate = useNavigate();
   const handleSignOut = () => {
@@ -10,9 +16,13 @@ const HomePage = () => {
     navigate("/sign-in");
   };
   return (
-    <div>
-      <button onClick={handleSignOut}>Sign Out</button>
-    </div>
+    <StyleHome>
+      <Layout>
+        <HomeBanner></HomeBanner>
+        <HomeFeature></HomeFeature>
+        <HomeNewest></HomeNewest>
+      </Layout>
+    </StyleHome>
   );
 };
 
